@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lilly Hart - official links, exclusive content, and socials.">
     <title>Lilly Hart</title>
     <link rel="stylesheet" href="./styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +43,7 @@
             if (/android/i.test(ua)) {
                 // Force open in default browser on Android
                 window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
+                window.location.href = "https://" + window.location.host + window.location.pathname;
             } else if (/iPhone|iPad|iPod/i.test(ua)) {
                 // Styled overlay for iOS
                 const overlay = document.createElement("div");

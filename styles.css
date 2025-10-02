@@ -36,7 +36,7 @@
 
 
 html {
-    background-image: url(./images/closeupblur.jpg);
+    background-image: url(./images/originalblur.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -46,7 +46,7 @@ html {
 }
 
 .body {
-    background-image: url(./images/closeup.jpeg);
+    background-image: url(./images/original.jpeg);
     background-size: cover;
     background-position: center;
 }

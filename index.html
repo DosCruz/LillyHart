@@ -33,72 +33,45 @@
     </div>
 
 <script>
-    (function() {
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        const isInstagram = ua.includes("Instagram");
-        const isFacebook = ua.includes("FBAN") || ua.includes("FBAV");
-        const isTikTok = ua.includes("TikTok");
+(function() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isInstagram = ua.includes("Instagram");
+    const isFacebook = ua.includes("FBAN") || ua.includes("FBAV");
+    const isTikTok = ua.includes("TikTok");
 
-        if (isInstagram || isFacebook || isTikTok) {
-            if (/android/i.test(ua)) {
-                // Force open in default browser on Android
-                window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
-            } else if (/iPhone|iPad|iPod/i.test(ua)) {
-                // Styled overlay for iOS
-                const overlay = document.createElement("div");
-                overlay.style.position = "fixed";
-                overlay.style.top = "0";
-                overlay.style.left = "0";
-                overlay.style.width = "100%";
-                overlay.style.height = "100%";
-                overlay.style.background = "rgba(0,0,0,0.95)";
-                overlay.style.color = "#F5F6F9";
-                overlay.style.display = "flex";
-                overlay.style.flexDirection = "column";
-                overlay.style.alignItems = "center";
-                overlay.style.justifyContent = "center";
-                overlay.style.fontFamily = "'Montserrat', sans-serif";
-                overlay.style.textAlign = "center";
-                overlay.style.padding = "20px";
-                overlay.style.zIndex = "9999";
+    if (isInstagram || isFacebook || isTikTok) {
+        if (/android/i.test(ua)) {
+            // Force open in default browser on Android (Chrome intent)
+            window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
+        } else if (/iPhone|iPad|iPod/i.test(ua)) {
+            // Create styled overlay for iOS using CSS classes
+            const overlay = document.createElement("div");
+            overlay.className = "safari-overlay";
 
-                const message = document.createElement("div");
-                message.innerHTML = `
-                    <h2 style="margin-bottom:15px;">⚠️ Open in Safari</h2>
-                    <p style="margin-bottom:20px;">This page works best outside of TikTok/Instagram/Facebook.</p>
-                    <p style="margin-bottom:30px;">Tap the <strong>•••</strong> menu in the corner and choose <strong>"Open in Browser"</strong>.</p>
-                `;
+            const card = document.createElement("div");
+            card.className = "safari-card";
+            card.innerHTML = `
+                <h2 class="safari-h">⚠️ Open in Safari</h2>
+                <p class="safari-p">This page works best outside of TikTok/Instagram/Facebook.</p>
+                <p class="safari-p">Tap below to continue in Safari.</p>
+                <div class="safari-buttons">
+                    <button class="btn-safari">Open in Safari</button>
+                </div>
+                <div class="small-note">If the popup doesn’t appear, use the ••• menu and choose "Open in Browser".</div>
+            `;
 
-                const button = document.createElement("button");
-                button.textContent = "Okay, got it";
-                button.style.padding = "12px 25px";
-                button.style.fontSize = "1rem";
-                button.style.fontFamily = "'Montserrat', sans-serif";
-                button.style.border = "none";
-                button.style.borderRadius = "8px";
-                button.style.backgroundColor = "#2C5530"; /* your forest green */
-                button.style.color = "#F5F6F9";
-                button.style.cursor = "pointer";
-                button.style.transition = "background 0.3s ease";
+            overlay.appendChild(card);
+            document.body.appendChild(overlay);
 
-                button.addEventListener("mouseover", () => {
-                    button.style.backgroundColor = "#3E7C4A"; // lighter green hover
-                });
-                button.addEventListener("mouseout", () => {
-                    button.style.backgroundColor = "#2C5530";
-                });
-
-                button.addEventListener("click", () => {
-                    window.open(window.location.href, "_blank");
-                    overlay.remove();
-                });
-
-                overlay.appendChild(message);
-                overlay.appendChild(button);
-                document.body.appendChild(overlay);
-            }
+            const safariButton = card.querySelector(".btn-safari");
+            safariButton.addEventListener("click", () => {
+                window.open(window.location.href, "_blank");
+                overlay.remove();
+            });
         }
-    })();
+    }
+})();
 </script>
+
 </body>
 </html>

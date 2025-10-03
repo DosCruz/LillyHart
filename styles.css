@@ -109,3 +109,58 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+/* overlay */
+.safari-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  color: #F5F6F9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:99999;
+  font-family: "Montserrat", sans-serif;
+  text-align:center;
+}
+.safari-card {
+  max-width:420px;
+  width:100%;
+  border-radius:12px;
+  padding:20px;
+}
+.safari-h {
+  font-size:20px;
+  margin-bottom:10px;
+}
+.safari-p {
+  font-size:15px;
+  margin-bottom:18px;
+  color: #e6e6e6;
+}
+.safari-buttons { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.btn-safari {
+  background:#F5F6F9;
+  color:#0c3b18;
+  padding:12px 18px;
+  border-radius:10px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  min-width:160px;
+}
+.btn-copy {
+  background:transparent;
+  border:1px solid rgba(245,246,249,0.15);
+  color:#F5F6F9;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  min-width:120px;
+}
+.small-note { 
+    margin-top:14px; 
+    font-size:13px; 
+    color:#cfcfcf; 
+}

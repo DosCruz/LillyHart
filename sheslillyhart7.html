@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lilly Hart</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="body">
+        <div class="content">
+            <div class="modelInfo">
+                <h1>Lilly Hart</h1>
+                <p>@sheslillyhart</p>
+            
+            <div class="ofButton">
+                <a id="of" href="https://onlyfans.com/sheslillyhart/c34" target="_blank" rel="noopener noreferrer"><h2>Exclusive Content</h2></a>
+            </div>
+
+            <div class="socials">
+                <a href="https://www.instagram.com/sheslillyhart" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.youtube.com/@sheslillyhart" target="_blank" rel="noopener noreferrer"><i class="bi bi-youtube"></i></a>
+                <a href="https://www.tiktok.com/@sillylillyhart" target="_blank" rel="noopener noreferrer"><i class="bi bi-tiktok"></i></a>
+            </div>
+
+            <div class="buttons"></div>
+        </div>
+        </div>
+    </div>
+
+<script>
+    (function() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isInstagram = ua.includes("Instagram");
+        const isFacebook = ua.includes("FBAN") || ua.includes("FBAV");
+        const isTikTok = ua.includes("TikTok");
+
+        if (isInstagram || isFacebook || isTikTok) {
+            if (/android/i.test(ua)) {
+                // Force open in default browser on Android
+                window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
+            } else if (/iPhone|iPad|iPod/i.test(ua)) {
+                // Styled overlay for iOS
+                const overlay = document.createElement("div");
+                overlay.style.position = "fixed";
+                overlay.style.top = "0";
+                overlay.style.left = "0";
+                overlay.style.width = "100%";
+                overlay.style.height = "100%";
+                overlay.style.background = "rgba(0,0,0,0.95)";
+                overlay.style.color = "#F5F6F9";
+                overlay.style.display = "flex";
+                overlay.style.flexDirection = "column";
+                overlay.style.alignItems = "center";
+                overlay.style.justifyContent = "center";
+                overlay.style.fontFamily = "'Montserrat', sans-serif";
+                overlay.style.textAlign = "center";
+                overlay.style.padding = "20px";
+                overlay.style.zIndex = "9999";
+
+                const message = document.createElement("div");
+                message.innerHTML = `
+                    <h2 style="margin-bottom:15px;">⚠️ Open in Safari</h2>
+                    <p style="margin-bottom:20px;">This page works best outside of TikTok/Instagram/Facebook.</p>
+                    <p style="margin-bottom:30px;">Tap the <strong>•••</strong> menu in the corner and choose <strong>"Open in Browser"</strong>.</p>
+                `;
+
+                const button = document.createElement("button");
+                button.textContent = "Okay, got it";
+                button.style.padding = "12px 25px";
+                button.style.fontSize = "1rem";
+                button.style.fontFamily = "'Montserrat', sans-serif";
+                button.style.border = "none";
+                button.style.borderRadius = "8px";
+                button.style.backgroundColor = "#2C5530"; /* your forest green */
+                button.style.color = "#F5F6F9";
+                button.style.cursor = "pointer";
+                button.style.transition = "background 0.3s ease";
+
+                button.addEventListener("mouseover", () => {
+                    button.style.backgroundColor = "#3E7C4A"; // lighter green hover
+                });
+                button.addEventListener("mouseout", () => {
+                    button.style.backgroundColor = "#2C5530";
+                });
+
+                button.addEventListener("click", () => {
+                    overlay.remove();
+                });
+
+                overlay.appendChild(message);
+                overlay.appendChild(button);
+                document.body.appendChild(overlay);
+            }
+        }
+    })();
+</script>
+</body>
+</html>

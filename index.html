@@ -59,12 +59,17 @@
             overlay.style.justifyContent = "center";
             overlay.style.fontFamily = "'Montserrat', sans-serif";
             overlay.style.textAlign = "center";
-            overlay.style.padding = "20px";
             overlay.style.zIndex = "9999";
+            overlay.style.overflowY = "auto"; // allow scroll if needed
+            overlay.style.boxSizing = "border-box";
+            overlay.style.padding = "40px 20px";
 
             const message = document.createElement("div");
+            message.style.maxWidth = "90%";
+            message.style.lineHeight = "1.5";
+            message.style.fontSize = "16px";
             message.innerHTML = `
-                <h2 style="margin-bottom:15px;">⚠️ Open in Safari</h2>
+                <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in Safari</h2>
                 <p style="margin-bottom:20px;">This page works best in Safari Browser.</p>
                 <p style="margin-bottom:30px;">Tap the <strong>•••</strong> menu in the corner and choose <strong>"Open in External Browser"</strong>.</p>
             `;
@@ -75,5 +80,6 @@
     }
 })();
 </script>
+
 </body>
 </html>

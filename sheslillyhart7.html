@@ -52,11 +52,13 @@
     const isFacebook = ua.includes("fban") || ua.includes("fbav");
 
     function showOverlay() {
+        if (document.getElementById("openBrowserOverlay")) return; // avoid duplicates
         const overlay = document.createElement("div");
+        overlay.id = "openBrowserOverlay";
         Object.assign(overlay.style, {
             position: "fixed",
-            top: 0,
-            left: 0,
+            top: "0",
+            left: "0",
             width: "100%",
             height: "100%",
             background: "rgba(0,0,0,0.95)",
@@ -67,28 +69,28 @@
             justifyContent: "center",
             fontFamily: "'Montserrat', sans-serif",
             textAlign: "center",
-            zIndex: "9999",
+            zIndex: "999999",
             padding: "40px 20px",
             boxSizing: "border-box",
         });
 
-        const message = document.createElement("div");
-        message.style.maxWidth = "90%";
-        message.style.lineHeight = "1.5";
-        message.style.fontSize = "16px";
-        message.innerHTML = `
+        const msg = document.createElement("div");
+        msg.style.maxWidth = "90%";
+        msg.style.lineHeight = "1.5";
+        msg.style.fontSize = "16px";
+        msg.innerHTML = `
             <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in External Browser</h2>
-            <p style="margin-bottom:20px;">This page works best when opened in Safari or Chrome.</p>
-            <p style="margin-bottom:30px;">Tap the <strong>•••</strong> or share icon, then choose <strong>"Open in Browser"</strong>.</p>
+            <p style="margin-bottom:20px;">This page works best in Safari or Chrome.</p>
+            <p style="margin-bottom:30px;">Tap the <strong>•••</strong> or Share icon, then choose <strong>"Open in Browser"</strong>.</p>
         `;
 
-        overlay.appendChild(message);
+        overlay.appendChild(msg);
         document.body.appendChild(overlay);
     }
 
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            // Android logic
+    // Run as soon as possible
+    const runDetection = () => {
+        try {
             if (isAndroid) {
                 if (isTikTok) {
                     showOverlay();
@@ -97,30 +99,28 @@
                         "intent://" + window.location.host + window.location.pathname +
                         "#Intent;scheme=https;package=com.android.chrome;end";
                 }
-            }
+            } else if (isIOS) {
+                // Safari toolbar check fallback
+                const toolbarMissing = window.innerHeight >= screen.height * 0.98;
+                const inAppGuess = !window.navigator.standalone && toolbarMissing;
 
-            // iOS logic
-            if (isIOS) {
-                // If clearly from TikTok/IG/FB → show overlay
-                if (isTikTok || isInstagram || isFacebook) {
+                if (isTikTok || isInstagram || isFacebook || inAppGuess) {
                     showOverlay();
-                } else {
-                    // TikTok iOS hidden case (UA looks like Safari)
-                    // Try detecting absence of Safari features (address bar, etc.)
-                    const isProbablyInApp = !window.navigator.standalone && !window.matchMedia('(display-mode: standalone)').matches;
-
-                    // Check if no toolbar (approximation)
-                    const toolbarMissing = window.innerHeight >= screen.height * 0.98;
-
-                    if (isProbablyInApp && toolbarMissing) {
-                        showOverlay();
-                    }
                 }
             }
-        }, 1200);
-    });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Run early and again after delay (TikTok may delay DOM creation)
+    runDetection();
+    document.addEventListener("DOMContentLoaded", runDetection);
+    setTimeout(runDetection, 1000);
+    setTimeout(runDetection, 3000);
 })();
 </script>
+
 
 
 

@@ -34,7 +34,9 @@
 
 <script>
 (function() {
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const ua = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+    const ref = (document.referrer || "").toLowerCase();
+
     const isTikTok =
         ua.includes("tiktok") ||
         ua.includes("ttwebview") ||
@@ -50,7 +52,7 @@
         if (/android/i.test(ua)) {
             // Force open in default browser on Android
             window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
-        } else if (/iPhone|iPad|iPod/i.test(ua)) {
+        } else if (/iphone|ipad|ipod/i.test(ua)) {
             // Styled overlay for iOS
             const overlay = document.createElement("div");
             overlay.style.position = "fixed";
@@ -67,7 +69,7 @@
             overlay.style.fontFamily = "'Montserrat', sans-serif";
             overlay.style.textAlign = "center";
             overlay.style.zIndex = "9999";
-            overlay.style.overflowY = "auto"; // allow scroll if needed
+            overlay.style.overflowY = "auto";
             overlay.style.boxSizing = "border-box";
             overlay.style.padding = "40px 20px";
 
@@ -87,6 +89,7 @@
     }
 })();
 </script>
+
 
 
 

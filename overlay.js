@@ -69,10 +69,7 @@
                 }
             } else if (isIOS) {
                 // Safari toolbar check fallback
-                const toolbarMissing = window.innerHeight >= screen.height * 0.98;
-                const inAppGuess = !window.navigator.standalone && toolbarMissing;
-
-                if (isTikTok || isInstagram || isFacebook || isReddit || isX || inAppGuess) {
+                if (isTikTok || isInstagram || isFacebook || isReddit || isX) {
                     showOverlay();
                 }
             }

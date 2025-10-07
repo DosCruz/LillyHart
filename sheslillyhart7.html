@@ -37,9 +37,10 @@
     const ua = navigator.userAgent || navigator.vendor || window.opera;
 
     // Updated TikTok detection (covers new patterns)
-    const isInstagram = /Instagram/i.test(ua);
-    const isFacebook = /FBAN|FBAV/i.test(ua);
-    const isTikTok = /TikTok|com\.zhiliaoapp\.musically/i.test(ua);
+    const isInstagram = ua.includes("Instagram");
+    const isFacebook = ua.includes("FBAN") || ua.includes("FBAV");
+    const isTikTok = ua.includes("TikTok") || ua.includes("TTWebView") || ua.includes("musical.ly");
+
 
     if (isInstagram || isFacebook || isTikTok) {
         if (/android/i.test(ua)) {

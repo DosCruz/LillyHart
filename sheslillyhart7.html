@@ -33,6 +33,33 @@
     </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const debug = document.createElement("div");
+  debug.style.position = "fixed";
+  debug.style.bottom = "10px";
+  debug.style.left = "10px";
+  debug.style.color = "white";
+  debug.style.background = "rgba(0,0,0,0.7)";
+  debug.style.padding = "5px 10px";
+  debug.style.fontSize = "12px";
+  debug.style.zIndex = "99999";
+  debug.innerText = "JS Loaded ✅";
+  document.body.appendChild(debug);
+
+  // Check if inside iframe (TikTok often does this)
+  if (window.self !== window.top) {
+    debug.innerText += " | In iframe 🚫";
+  } else {
+    debug.innerText += " | Top window ✅";
+  }
+
+  // Quick user agent check
+  debug.innerText += " | " + navigator.userAgent;
+});
+</script>
+
+
+<script>
 (function() {
     const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
     const ref = (document.referrer || "").toLowerCase();

@@ -34,61 +34,63 @@
 
 <script>
 (function() {
-    const ua = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
-    const ref = (document.referrer || "").toLowerCase();
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isTikTok = ua.toLowerCase().includes("tiktok") || ua.toLowerCase().includes("trill") || ua.toLowerCase().includes("musical.ly");
+    const isInstagram = ua.toLowerCase().includes("instagram");
+    const isFacebook = ua.toLowerCase().includes("fban") || ua.toLowerCase().includes("fbav");
 
-    const isTikTok =
-        ua.includes("tiktok") ||
-        ua.includes("ttwebview") ||
-        ua.includes("musical.ly") ||
-        ua.includes("trill") ||
-        ua.includes("zhiliaoapp") ||
-        ref.includes("tiktoklinksafety.com");
+    // helper function for showing overlay
+    function showOverlay() {
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.background = "rgba(0,0,0,0.95)";
+        overlay.style.color = "#F5F6F9";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "center";
+        overlay.style.fontFamily = "'Montserrat', sans-serif";
+        overlay.style.textAlign = "center";
+        overlay.style.zIndex = "9999";
+        overlay.style.overflowY = "auto";
+        overlay.style.boxSizing = "border-box";
+        overlay.style.padding = "40px 20px";
 
-    const isInstagram = ua.includes("instagram");
-    const isFacebook = ua.includes("fban") || ua.includes("fbav");
+        const message = document.createElement("div");
+        message.style.maxWidth = "90%";
+        message.style.lineHeight = "1.5";
+        message.style.fontSize = "16px";
+        message.innerHTML = `
+            <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in External Browser</h2>
+            <p style="margin-bottom:20px;">This page works best when opened in your phone’s main browser.</p>
+            <p style="margin-bottom:30px;">Tap the <strong>•••</strong> (or share icon) and choose <strong>"Open in Browser"</strong>.</p>
+        `;
 
-    if (isInstagram || isFacebook || isTikTok) {
-        if (/android/i.test(ua)) {
-            // Force open in default browser on Android
-            window.location.href = "intent://" + window.location.host + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
-        } else if (/iphone|ipad|ipod/i.test(ua)) {
-            // Styled overlay for iOS
-            const overlay = document.createElement("div");
-            overlay.style.position = "fixed";
-            overlay.style.top = "0";
-            overlay.style.left = "0";
-            overlay.style.width = "100%";
-            overlay.style.height = "100%";
-            overlay.style.background = "rgba(0,0,0,0.95)";
-            overlay.style.color = "#F5F6F9";
-            overlay.style.display = "flex";
-            overlay.style.flexDirection = "column";
-            overlay.style.alignItems = "center";
-            overlay.style.justifyContent = "center";
-            overlay.style.fontFamily = "'Montserrat', sans-serif";
-            overlay.style.textAlign = "center";
-            overlay.style.zIndex = "9999";
-            overlay.style.overflowY = "auto";
-            overlay.style.boxSizing = "border-box";
-            overlay.style.padding = "40px 20px";
+        overlay.appendChild(message);
+        document.body.appendChild(overlay);
+    }
 
-            const message = document.createElement("div");
-            message.style.maxWidth = "90%";
-            message.style.lineHeight = "1.5";
-            message.style.fontSize = "16px";
-            message.innerHTML = `
-                <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in Safari</h2>
-                <p style="margin-bottom:20px;">This page works best in Safari Browser.</p>
-                <p style="margin-bottom:30px;">Tap the <strong>•••</strong> menu in the corner and choose <strong>"Open in External Browser"</strong>.</p>
-            `;
-
-            overlay.appendChild(message);
-            document.body.appendChild(overlay);
+    if (/android/i.test(ua)) {
+        if (isTikTok) {
+            // TikTok Android → show overlay
+            showOverlay();
+        } else if (isInstagram || isFacebook) {
+            // Instagram/Facebook Android → open in Chrome via intent
+            window.location.href = `intent://${window.location.host}${window.location.pathname}#Intent;scheme=https;package=com.android.chrome;end`;
+        }
+    } else if (/iPhone|iPad|iPod/i.test(ua)) {
+        // All iOS → show overlay
+        if (isTikTok || isInstagram || isFacebook) {
+            showOverlay();
         }
     }
 })();
 </script>
+
 
 
 

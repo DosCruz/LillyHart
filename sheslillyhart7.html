@@ -35,29 +35,40 @@
 <script>
 (function() {
     const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
-    const isTikTok = ua.includes("tiktok") || ua.includes("ttwebview") || ua.includes("trill") || ua.includes("musical.ly") || ua.includes("aweme");
+    const ref = (document.referrer || "").toLowerCase();
+
+    const isTikTok =
+        ua.includes("tiktok") ||
+        ua.includes("ttwebview") ||
+        ua.includes("trill") ||
+        ua.includes("musical.ly") ||
+        ua.includes("aweme") ||
+        ref.includes("tiktoklinksafety.com");
+
     const isInstagram = ua.includes("instagram");
     const isFacebook = ua.includes("fban") || ua.includes("fbav");
 
     function showOverlay() {
         const overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.background = "rgba(0,0,0,0.95)";
-        overlay.style.color = "#F5F6F9";
-        overlay.style.display = "flex";
-        overlay.style.flexDirection = "column";
-        overlay.style.alignItems = "center";
-        overlay.style.justifyContent = "center";
-        overlay.style.fontFamily = "'Montserrat', sans-serif";
-        overlay.style.textAlign = "center";
-        overlay.style.zIndex = "9999";
-        overlay.style.overflowY = "auto";
-        overlay.style.boxSizing = "border-box";
-        overlay.style.padding = "40px 20px";
+        Object.assign(overlay.style, {
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.95)",
+            color: "#F5F6F9",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "'Montserrat', sans-serif",
+            textAlign: "center",
+            zIndex: "9999",
+            overflowY: "auto",
+            boxSizing: "border-box",
+            padding: "40px 20px"
+        });
 
         const message = document.createElement("div");
         message.style.maxWidth = "90%";
@@ -65,30 +76,35 @@
         message.style.fontSize = "16px";
         message.innerHTML = `
             <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in External Browser</h2>
-            <p style="margin-bottom:20px;">This page works best when opened in your phone’s main browser.</p>
-            <p style="margin-bottom:30px;">Tap the <strong>•••</strong> (or share icon) and choose <strong>"Open in Browser"</strong>.</p>
+            <p style="margin-bottom:20px;">This page works best when opened in your main browser (Safari or Chrome).</p>
+            <p style="margin-bottom:30px;">Tap the <strong>•••</strong> or share icon, then choose <strong>"Open in Browser"</strong>.</p>
         `;
 
         overlay.appendChild(message);
         document.body.appendChild(overlay);
     }
 
-    // Delay to let iOS WebView fully load
-    setTimeout(() => {
-        if (/android/i.test(ua)) {
-            if (isTikTok) {
-                showOverlay();
-            } else if (isInstagram || isFacebook) {
-                window.location.href = `intent://${window.location.host}${window.location.pathname}#Intent;scheme=https;package=com.android.chrome;end`;
+    // Wait a bit for referrer to become available in TikTok iOS
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            if (/android/i.test(ua)) {
+                if (isTikTok) {
+                    showOverlay();
+                } else if (isInstagram || isFacebook) {
+                    window.location.href =
+                        "intent://" + window.location.host + window.location.pathname +
+                        "#Intent;scheme=https;package=com.android.chrome;end";
+                }
+            } else if (/iphone|ipad|ipod/i.test(ua)) {
+                if (isTikTok || isInstagram || isFacebook) {
+                    showOverlay();
+                }
             }
-        } else if (/iphone|ipad|ipod/i.test(ua)) {
-            if (isTikTok || isInstagram || isFacebook) {
-                showOverlay();
-            }
-        }
-    }, 800); // <-- delay helps TikTok iOS properly execute the JS
+        }, 1000);
+    });
 })();
 </script>
+
 
 
 </body>

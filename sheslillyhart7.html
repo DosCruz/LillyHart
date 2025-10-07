@@ -88,9 +88,24 @@
 </script>
 
 <script>
-console.log(navigator.userAgent);
-alert(navigator.userAgent);
+document.addEventListener("DOMContentLoaded", () => {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const output = document.createElement("p");
+  output.style.position = "fixed";
+  output.style.bottom = "10px";
+  output.style.left = "10px";
+  output.style.right = "10px";
+  output.style.padding = "10px";
+  output.style.background = "rgba(0,0,0,0.8)";
+  output.style.color = "#fff";
+  output.style.fontSize = "12px";
+  output.style.wordWrap = "break-word";
+  output.style.zIndex = "99999";
+  output.textContent = ua;
+  document.body.appendChild(output);
+});
 </script>
+
 
 </body>
 </html>

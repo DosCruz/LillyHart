@@ -37,6 +37,9 @@
     const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
     const ref = (document.referrer || "").toLowerCase();
 
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
+
     const isTikTok =
         ua.includes("tiktok") ||
         ua.includes("ttwebview") ||
@@ -52,8 +55,8 @@
         const overlay = document.createElement("div");
         Object.assign(overlay.style, {
             position: "fixed",
-            top: "0",
-            left: "0",
+            top: 0,
+            left: 0,
             width: "100%",
             height: "100%",
             background: "rgba(0,0,0,0.95)",
@@ -65,9 +68,8 @@
             fontFamily: "'Montserrat', sans-serif",
             textAlign: "center",
             zIndex: "9999",
-            overflowY: "auto",
+            padding: "40px 20px",
             boxSizing: "border-box",
-            padding: "40px 20px"
         });
 
         const message = document.createElement("div");
@@ -76,7 +78,7 @@
         message.style.fontSize = "16px";
         message.innerHTML = `
             <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in External Browser</h2>
-            <p style="margin-bottom:20px;">This page works best when opened in your main browser (Safari or Chrome).</p>
+            <p style="margin-bottom:20px;">This page works best when opened in Safari or Chrome.</p>
             <p style="margin-bottom:30px;">Tap the <strong>•••</strong> or share icon, then choose <strong>"Open in Browser"</strong>.</p>
         `;
 
@@ -84,10 +86,10 @@
         document.body.appendChild(overlay);
     }
 
-    // Wait a bit for referrer to become available in TikTok iOS
     window.addEventListener("load", () => {
         setTimeout(() => {
-            if (/android/i.test(ua)) {
+            // Android logic
+            if (isAndroid) {
                 if (isTikTok) {
                     showOverlay();
                 } else if (isInstagram || isFacebook) {
@@ -95,15 +97,31 @@
                         "intent://" + window.location.host + window.location.pathname +
                         "#Intent;scheme=https;package=com.android.chrome;end";
                 }
-            } else if (/iphone|ipad|ipod/i.test(ua)) {
+            }
+
+            // iOS logic
+            if (isIOS) {
+                // If clearly from TikTok/IG/FB → show overlay
                 if (isTikTok || isInstagram || isFacebook) {
                     showOverlay();
+                } else {
+                    // TikTok iOS hidden case (UA looks like Safari)
+                    // Try detecting absence of Safari features (address bar, etc.)
+                    const isProbablyInApp = !window.navigator.standalone && !window.matchMedia('(display-mode: standalone)').matches;
+
+                    // Check if no toolbar (approximation)
+                    const toolbarMissing = window.innerHeight >= screen.height * 0.98;
+
+                    if (isProbablyInApp && toolbarMissing) {
+                        showOverlay();
+                    }
                 }
             }
-        }, 1000);
+        }, 1200);
     });
 })();
 </script>
+
 
 
 

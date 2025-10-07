@@ -11,11 +11,13 @@
         ua.includes("trill") ||
         ua.includes("musical.ly") ||
         ua.includes("aweme") ||
-        ua.includes("bytedancewebview");
+        ua.includes("bytedancewebview") ||
         ref.includes("tiktoklinksafety.com");
 
     const isInstagram = ua.includes("instagram");
     const isFacebook = ua.includes("fban") || ua.includes("fbav");
+    const isReddit = ua.includes("reddit");
+    const isX = ua.includes("twitter") || ua.includes("x");
 
     function showOverlay() {
         if (document.getElementById("openBrowserOverlay")) return; // avoid duplicates
@@ -58,7 +60,7 @@
     const runDetection = () => {
         try {
             if (isAndroid) {
-                if (isTikTok) {
+                if (isTikTok || isReddit || isX) {
                     showOverlay();
                 } else if (isInstagram || isFacebook) {
                     window.location.href =
@@ -70,7 +72,7 @@
                 const toolbarMissing = window.innerHeight >= screen.height * 0.98;
                 const inAppGuess = !window.navigator.standalone && toolbarMissing;
 
-                if (isTikTok || isInstagram || isFacebook || inAppGuess) {
+                if (isTikTok || isInstagram || isFacebook || isReddit || isX || inAppGuess) {
                     showOverlay();
                 }
             }

@@ -34,12 +34,11 @@
 
 <script>
 (function() {
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
-    const isTikTok = ua.toLowerCase().includes("tiktok") || ua.toLowerCase().includes("trill") || ua.toLowerCase().includes("musical.ly");
-    const isInstagram = ua.toLowerCase().includes("instagram");
-    const isFacebook = ua.toLowerCase().includes("fban") || ua.toLowerCase().includes("fbav");
+    const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
+    const isTikTok = ua.includes("tiktok") || ua.includes("ttwebview") || ua.includes("trill") || ua.includes("musical.ly") || ua.includes("aweme");
+    const isInstagram = ua.includes("instagram");
+    const isFacebook = ua.includes("fban") || ua.includes("fbav");
 
-    // helper function for showing overlay
     function showOverlay() {
         const overlay = document.createElement("div");
         overlay.style.position = "fixed";
@@ -74,25 +73,22 @@
         document.body.appendChild(overlay);
     }
 
-    if (/android/i.test(ua)) {
-        if (isTikTok) {
-            // TikTok Android → show overlay
-            showOverlay();
-        } else if (isInstagram || isFacebook) {
-            // Instagram/Facebook Android → open in Chrome via intent
-            window.location.href = `intent://${window.location.host}${window.location.pathname}#Intent;scheme=https;package=com.android.chrome;end`;
+    // Delay to let iOS WebView fully load
+    setTimeout(() => {
+        if (/android/i.test(ua)) {
+            if (isTikTok) {
+                showOverlay();
+            } else if (isInstagram || isFacebook) {
+                window.location.href = `intent://${window.location.host}${window.location.pathname}#Intent;scheme=https;package=com.android.chrome;end`;
+            }
+        } else if (/iphone|ipad|ipod/i.test(ua)) {
+            if (isTikTok || isInstagram || isFacebook) {
+                showOverlay();
+            }
         }
-    } else if (/iPhone|iPad|iPod/i.test(ua)) {
-        // All iOS → show overlay
-        if (isTikTok || isInstagram || isFacebook) {
-            showOverlay();
-        }
-    }
+    }, 800); // <-- delay helps TikTok iOS properly execute the JS
 })();
 </script>
-
-
-
 
 
 </body>

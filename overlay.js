@@ -16,8 +16,8 @@
 
     const isInstagram = ua.includes("instagram");
     const isFacebook = ua.includes("fban") || ua.includes("fbav");
-    const isReddit = ua.includes("reddit");
-    const isX = ua.includes("twitter") || ua.includes("x");
+    const isX = ua.includes("twitter") && ua.includes("mobile"); // mobile Twitter app
+    const isReddit = ua.includes("reddit") && ua.includes("app"); // Reddit app
 
     function showOverlay() {
         if (document.getElementById("openBrowserOverlay")) return; // avoid duplicates

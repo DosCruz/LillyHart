@@ -33,49 +33,58 @@
     </div>
 
 <script>
-  (function() {
-    const ua = navigator.userAgent.toLowerCase();
-    const ref = document.referrer.toLowerCase();
+(function() {
+  const ua = navigator.userAgent.toLowerCase();
+  const ref = document.referrer.toLowerCase();
 
-    // Detect TikTok safety redirect or embedded browsers
-    const isTikTok = ua.includes("tiktok") || ref.includes("tiktoklinksafety.com");
-    const isInstagram = ua.includes("instagram");
-    const isFacebook = ua.includes("fban") || ua.includes("fbav");
+  // Broader detection for TikTok webviews
+  const isTikTok =
+    ua.includes("tiktok") ||
+    ua.includes("ttwebview") ||
+    ua.includes("musical.ly") ||
+    ua.includes("trill") ||
+    ua.includes("zhiliaoapp") ||
+    ref.includes("tiktoklinksafety.com");
 
-    if (isTikTok || isInstagram || isFacebook) {
-      // Create dark overlay
-      const overlay = document.createElement("div");
-      overlay.style.position = "fixed";
-      overlay.style.top = "0";
-      overlay.style.left = "0";
-      overlay.style.width = "100%";
-      overlay.style.height = "100%";
-      overlay.style.background = "rgba(0,0,0,0.95)";
-      overlay.style.color = "#fff";
-      overlay.style.display = "flex";
-      overlay.style.flexDirection = "column";
-      overlay.style.alignItems = "center";
-      overlay.style.justifyContent = "center";
-      overlay.style.fontFamily = "'Montserrat', sans-serif";
-      overlay.style.textAlign = "center";
-      overlay.style.zIndex = "9999";
-      overlay.style.padding = "40px 20px";
+  const isInstagram = ua.includes("instagram");
+  const isFacebook = ua.includes("fban") || ua.includes("fbav");
 
-      const message = document.createElement("div");
-      message.style.maxWidth = "90%";
-      message.style.lineHeight = "1.5";
-      message.style.fontSize = "17px";
-      message.innerHTML = `
-        <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in Safari or Chrome</h2>
-        <p style="margin-bottom:20px;">This page works best in your phone’s browser.</p>
-        <p>Tap the <strong>•••</strong> or <strong>Share</strong> icon in the corner and choose <strong>"Open in External Browser"</strong>.</p>
-      `;
+  if (isTikTok || isInstagram || isFacebook) {
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "rgba(0,0,0,0.95)";
+    overlay.style.color = "#fff";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.fontFamily = "'Montserrat', sans-serif";
+    overlay.style.textAlign = "center";
+    overlay.style.zIndex = "9999";
+    overlay.style.padding = "40px 20px";
 
-      overlay.appendChild(message);
-      document.body.appendChild(overlay);
-    }
-  })();
-  </script>
+    const message = document.createElement("div");
+    message.style.maxWidth = "90%";
+    message.style.lineHeight = "1.5";
+    message.style.fontSize = "17px";
+    message.innerHTML = `
+      <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in Safari or Chrome</h2>
+      <p style="margin-bottom:20px;">This page works best in your phone’s browser.</p>
+      <p>Tap the <strong>•••</strong> or <strong>Share</strong> icon in the corner and choose <strong>"Open in External Browser"</strong>.</p>
+    `;
+
+    overlay.appendChild(message);
+    document.body.appendChild(overlay);
+  }
+
+  console.log("User Agent:", ua);
+})();
+</script>
+
 
 
 </body>

@@ -75,6 +75,12 @@
                 if (isTikTok || isInstagram || isFacebook || isReddit || isX) {
                     showOverlay();
                 }
+            } else {
+                const isAdult = confirm("Are you at least 18 years old?");
+                if (!isAdult) {
+                    alert("Sorry, this content is for 18+ only.");
+                    window.location.href = "https://google.com";
+                }
             }
         } catch (err) {
             console.error(err);
@@ -82,39 +88,6 @@
     };
 
     // Run early and again after delay (TikTok may delay DOM creation)
-    runDetection();
     document.addEventListener("DOMContentLoaded", runDetection);
-    setTimeout(runDetection, 1000);
-    setTimeout(runDetection, 3000);
 })();
 
-(function() {
-    const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
-    const ref = (document.referrer || "").toLowerCase();
-
-    const isInApp =
-        ua.includes("tiktok") ||
-        ua.includes("ttwebview") ||
-        ua.includes("trill") ||
-        ua.includes("musical.ly") ||
-        ua.includes("aweme") ||
-        ua.includes("bytedancewebview") ||
-        ua.includes("instagram") ||
-        ua.includes("fban") ||
-        ua.includes("fbav") ||
-        (ua.includes("twitter") && ua.includes("mobile")) ||
-        ua.includes("reddit") ||
-        ref.includes("tiktoklinksafety.com");
-    
-    if (!isInApp) {
-        window.addEventListener("load", () => {
-            setTimeout(() => {
-                const isAdult = confirm("Are you at least 18 years old?");
-                if (!isAdult) {
-                    alert("Sorry, this content is for 18+ only.");
-                    window.location.href = "https://google.com";
-                }
-            }, 500);
-        });
-    }
-})

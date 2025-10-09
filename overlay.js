@@ -47,9 +47,12 @@
         msg.style.lineHeight = "1.5";
         msg.style.fontSize = "16px";
         msg.innerHTML = `
-            <h2 style="margin-bottom:15px; font-size:22px;">⚠️ Open in External Browser</h2>
-            <p style="margin-bottom:20px;">This page works best in Safari or Chrome.</p>
-            <p style="margin-bottom:30px;">Tap the <strong>•••</strong>, then choose <strong>"Open in Browser"</strong>.</p>
+            <i class="bi bi-hand-index-thumb" 
+                style="position:absolute; top:20px; right:20px; font-size:40px; color:#F5F6F9; pointer-events:none; animation:hand-bounce 1.2s infinite;"></i>
+
+            <h2 style="margin-bottom:15px; font-size:22px;">To access the link, follow these 2 simple steps:</h2>
+            <p style="margin-bottom:20px;">Click the <strong>•••</strong> menu in the top right</p>
+            <p style="margin-bottom:30px;">Select <strong>"Open in Browser"</strong>.</p>
         `;
 
         overlay.appendChild(msg);
@@ -84,3 +87,34 @@
     setTimeout(runDetection, 1000);
     setTimeout(runDetection, 3000);
 })();
+
+(function() {
+    const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
+    const ref = (document.referrer || "").toLowerCase();
+
+    const isInApp =
+        ua.includes("tiktok") ||
+        ua.includes("ttwebview") ||
+        ua.includes("trill") ||
+        ua.includes("musical.ly") ||
+        ua.includes("aweme") ||
+        ua.includes("bytedancewebview") ||
+        ua.includes("instagram") ||
+        ua.includes("fban") ||
+        ua.includes("fbav") ||
+        (ua.includes("twitter") && ua.includes("mobile")) ||
+        ua.includes("reddit") ||
+        ref.includes("tiktoklinksafety.com");
+    
+    if (!isInApp) {
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                const isAdult = confirm("Are you at least 18 years old?");
+                if (!isAdult) {
+                    alert("Sorry, this content is for 18+ only.");
+                    window.location.href = "https://google.com";
+                }
+            }, 500);
+        });
+    }
+})

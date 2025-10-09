@@ -80,11 +80,12 @@
             zIndex: "999999",
             fontFamily: "'Montserrat', sans-serif",
             textAlign: "center",
-            padding: "20px",
+            padding: "0",
+            overflow: "hidden",
         });
 
         overlay.innerHTML = `
-            <div style="background:#111; padding:30px 20px; border-radius:12px; max-width:90%; box-shadow:0 0 10px rgba(0,0,0,0.4);">
+            <div style="background:#111; padding:30px 20px; border-radius:12px; width:90%; max-width:400px; margin:0 auto; box-shadow:0 0 10px rgba(0,0,0,0.4);">
                 <h2 style="margin-bottom:15px; font-size:22px;">Are you at least 18 years old?</h2>
                 <p style="margin-bottom:25px;">You must confirm to continue to this content.</p>
                 <div style="display:flex; gap:15px; justify-content:center;">

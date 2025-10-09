@@ -59,6 +59,53 @@
         document.body.appendChild(overlay);
     }
 
+    function showAgeModal() {
+        // Prevent duplicates
+        if (document.getElementById("ageModal")) return;
+
+        const overlay = document.createElement("div");
+        overlay.id = "ageModal";
+        Object.assign(overlay.style, {
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            zIndex: "999999",
+            fontFamily: "'Montserrat', sans-serif",
+            textAlign: "center",
+            padding: "20px",
+        });
+
+        overlay.innerHTML = `
+            <div style="background:#111; padding:30px 20px; border-radius:12px; max-width:90%; box-shadow:0 0 10px rgba(0,0,0,0.4);">
+                <h2 style="margin-bottom:15px; font-size:22px;">Are you at least 18 years old?</h2>
+                <p style="margin-bottom:25px;">You must confirm to continue to this content.</p>
+                <div style="display:flex; gap:15px; justify-content:center;">
+                    <button id="yesBtn" style="padding:10px 25px; border:none; border-radius:8px; background:#4CAF50; color:white; font-size:16px; cursor:pointer;">Yes</button>
+                    <button id="noBtn" style="padding:10px 25px; border:none; border-radius:8px; background:#E53935; color:white; font-size:16px; cursor:pointer;">No</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        document.getElementById("yesBtn").addEventListener("click", () => {
+            overlay.remove();
+        });
+
+        document.getElementById("noBtn").addEventListener("click", () => {
+            alert("Sorry, this content is for 18+ only.");
+            window.location.href = "https://google.com";
+        });
+    }
+
     // Run as soon as possible
     const runDetection = () => {
         try {
@@ -76,11 +123,9 @@
                     showOverlay();
                 }
             } else {
-                const isAdult = confirm("Are you at least 18 years old?");
-                if (!isAdult) {
-                    alert("Sorry, this content is for 18+ only.");
-                    window.location.href = "https://google.com";
-                }
+                setTimeout(() => {
+                    showAgeModal();
+                }, 700);
             }
         } catch (err) {
             console.error(err);

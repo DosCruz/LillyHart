@@ -124,7 +124,11 @@
                 if (isTikTok || isInstagram || isFacebook || isReddit || isX) {
                     showOverlay();
                 } else {
-                    showAgeModal();
+                    if(document.readyState === "complete") {
+                        showAgeModal();
+                    } else {
+                        window.addEventListener("load", () => setTimeout(showAgeModal, 500));
+                    }
                 }
             } else {
                 showAgeModal();

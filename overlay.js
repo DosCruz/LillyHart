@@ -116,16 +116,18 @@
                     window.location.href =
                         "intent://" + window.location.host + window.location.pathname +
                         "#Intent;scheme=https;package=com.android.chrome;end";
+                } else {
+                    showAgeModal();
                 }
             } else if (isIOS) {
                 // Safari toolbar check fallback
                 if (isTikTok || isInstagram || isFacebook || isReddit || isX) {
                     showOverlay();
+                } else {
+                    showAgeModal();
                 }
             } else {
-                setTimeout(() => {
-                    showAgeModal();
-                }, 700);
+                showAgeModal();
             }
         } catch (err) {
             console.error(err);
